@@ -10,14 +10,18 @@ function createGrid(gridSize) {
         const cellRow = document.createElement("div");
         cellRow.className = "cellRow";
         for (let j = 1; j <= gridSize; j++) {
+            const cellBorder = document.createElement("div");
+            cellBorder.className = "cellBorder";
+
             const cell = document.createElement("div");
             cell.className = "cell";
 
-            cell.addEventListener("mouseenter", () => {
-                cell.style.backgroundColor = getRandomColor();
+            cell.addEventListener("mouseenter", (event) => {
+                colorCell(event.target);
             });
-
-            cellRow.append(cell);
+            
+            cellBorder.append(cell);
+            cellRow.append(cellBorder);
         }
 
         container.append(cellRow);
@@ -39,16 +43,30 @@ function promptGrid() {
     
 }
 
+function colorCell(target) {
+    const currentOpacity = getCurrentOpacity(target);
+    if (currentOpacity < 1) {
+        const newOpacity = currentOpacity + 0.1;
+        target.style.opacity = newOpacity;   
+    }
+                
+    target.style.backgroundColor = getRandomColor(target);
+}
+
 function getRandomColor() {
     const red = getRandomNumber(0, 255);
     const green = getRandomNumber(0, 255);
     const blue = getRandomNumber(0, 255);
 
-    return `rgb(${red}, ${green}, ${blue})`;
+    return `rgba(${red}, ${green}, ${blue})`;
 }
 
 function getRandomNumber(min, max) {
     return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+function getCurrentOpacity(target) {
+    return parseFloat(window.getComputedStyle(target).getPropertyValue("opacity"));
 }
 
 createGridButton.addEventListener("click", promptGrid);
