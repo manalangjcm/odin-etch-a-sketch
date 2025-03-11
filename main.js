@@ -13,8 +13,8 @@ function createGrid(gridSize) {
             const cell = document.createElement("div");
             cell.className = "cell";
 
-            cell.addEventListener("mouseenter", (event) => {
-                cell.style.backgroundColor = "black";
+            cell.addEventListener("mouseenter", () => {
+                cell.style.backgroundColor = getRandomColor();
             });
 
             cellRow.append(cell);
@@ -37,6 +37,18 @@ function promptGrid() {
 
     createGrid(gridSize);
     
+}
+
+function getRandomColor() {
+    const red = getRandomNumber(0, 255);
+    const green = getRandomNumber(0, 255);
+    const blue = getRandomNumber(0, 255);
+
+    return `rgb(${red}, ${green}, ${blue})`;
+}
+
+function getRandomNumber(min, max) {
+    return min + Math.floor(Math.random() * (max - min + 1));
 }
 
 createGridButton.addEventListener("click", promptGrid);
